@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'countries',
+    'django.contrib.humanize',
+
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,62 @@
+/* Custom styles beyond Bootstrap */
+
+/* Flag size standardization */
+.flag-img {
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+/* Country cards hover effect */
+.country-card {
+    border: 1px solid rgba(0,0,0,.125);
+    transition: all 0.3s ease;
+}
+
+.country-card:hover {
+    border-color: #0d6efd;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Search highlight */
+.search-highlight {
+    background-color: rgba(255, 255, 0, 0.3);
+    padding: 0 2px;
+}
+
+/* Custom fonts */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Login page styling */
+.login-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Responsive table styles */
+@media (max-width: 768px) {
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
+}
+
+/* Custom button styling */
+.btn-country {
+    color: #fff;
+    background-color: #0a58ca;
+    border-color: #0a53be;
+}
+
+.btn-country:hover {
+    color: #fff;
+    background-color: #0a4bab;
+    border-color: #094293;
+}
+
+/* Footer styling */
+footer {
+    border-top: 1px solid #ddd;
+}

@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}{{ country.name }} | Country Fusion{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'country_list' %}">Countries</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ country.name }}</li>
+  </ol>
+</nav>
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="d-flex align-items-center">
+            {% if country.flag_url %}
+                <img src="{{ country.flag_url }}" alt="{{ country.name }} flag" style="width: 60px; height: auto; margin-right: 15px;">
+            {% endif %}
+            <div>
+                <h1 class="mb-0">{{ country.name }}</h1>
+                <p class="text-muted">{{ country.common_name }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Basic Information</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Country Code (cca2)</th>
+                            <td>{{ country.cca2 }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Country Code (cca3)</th>
+                            <td>{{ country.cca3 }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Capital</th>
+                            <td>{{ country.capital|default:"N/A" }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Region</th>
+                            <td>{{ country.region }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Subregion</th>
+                            <td>{{ country.subregion|default:"N/A" }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Population</th>
+                            <td>{{ country.population|intcomma }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Flag Emoji</th>
+                            <td>{{ country.flag_emoji|default:"N/A" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Languages</h5>
+            </div>
+            <div class="card-body">
+                {% if languages %}
+                    <ul class="list-group">
+                        {% for language in languages %}
+                            <li class="list-group-item">{{ language }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No language data available</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Timezones</h5>
+            </div>
+            <div class="card-body">
+                {% if country.timezones %}
+                    <ul class="list-group">
+                        {% for timezone in country.timezones %}
+                            <li class="list-group-item">{{ timezone }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No timezone data available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h5 class="mb-0">Countries in the same region ({{ country.region }})</h5>
+    </div>
+    <div class="card-body">
+        {% if regional_countries %}
+            <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-3">
+                {% for regional_country in regional_countries|slice:":8" %}
+                    <div class="col">
+                        <div class="card h-100 country-card">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex align-items-center mb-2">
+                                    {% if regional_country.flag_url %}
+                                        <img src="{{ regional_country.flag_url }}" alt="{{ regional_country.name }} flag" class="flag-img me-2">
+                                    {% endif %}
+                                    <h6 class="card-title mb-0">{{ regional_country.name }}</h6>
+                                </div>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        Capital: {{ regional_country.capital|default:"N/A" }}<br>
+                                        Population: {{ regional_country.population|intcomma }}
+                                    </small>
+                                </p>
+                                <a href="{% url 'country_detail' regional_country.id %}" class="btn btn-sm btn-outline-primary mt-auto">View</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% if regional_countries.count > 8 %}
+                <div class="mt-3 text-center">
+                    <a href="{% url 'country_list' %}?search={{ country.region }}" class="btn btn-outline-primary">
+                        View all {{ regional_countries.count }} countries in {{ country.region }}
+                    </a>
+                </div>
+            {% endif %}
+        {% else %}
+            <p class="text-muted">No other countries found in this region</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
